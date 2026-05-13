@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import {captureApiMetrics} from "./middlewares/apiMetrics.middleware.js"
 
 const app = express()
 
@@ -13,6 +14,7 @@ app.use(express.json({limit: "30KB"}))
 app.use(express.urlencoded({extended: true, limit: "30kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
+app.use(captureApiMetrics)
 
 // routes import
 import userRouter from "./routes/user.routes.js"
@@ -24,6 +26,7 @@ import likeRouter from "./routes/like.routes.js"
 import playlistRouter from "./routes/playlist.routes.js"
 import dashboardRouter from "./routes/dashboard.routes.js"
 import healthcheckRouter from "./routes/healthcheck.routes.js"
+import apiMetricsRouter from "./routes/apiMetrics.routes.js"
 import losDashboardRouter from "./routes/losDashboard.routes.js"
 
 // routes declaration
@@ -38,6 +41,7 @@ app.use("/api/v1/likes", likeRouter)
 app.use("/api/v1/playlist", playlistRouter)
 app.use("/api/v1/dashboard", dashboardRouter)
 app.use("/api/v1/healthcheck", healthcheckRouter)
+app.use("/api/v1/api-metrics", apiMetricsRouter)
 app.use("/api/v1/los-dashboard", losDashboardRouter)
 
 
